@@ -9,7 +9,8 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:get/get.dart';
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+  final String titleText;
+  const SignUpScreen({super.key, this.titleText="Sign Up"});
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -17,6 +18,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+
   final number='+923091678178';
   final SignUpController signUpController = Get.put(SignUpController());
   final _formKey = GlobalKey<FormState>();
@@ -61,8 +63,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Obx(
                     () => CustomDropdown(
                       label: "Select your Role",
-                      value: signUpController.selectedRole.value,
-                      items: signUpController.roles,
+                      value:widget.titleText!="Sign Up" ? 'Employee': signUpController.selectedRole.value,
+                      items: widget.titleText!="Sign Up" ? ['Employee','Manager','Client'] : signUpController.roles,
                       onChanged: (val) {
                         if (val != null) {
                           signUpController.selectedRole.value = val;
@@ -86,7 +88,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       child: signUpController.isLoading.value
                           ? CircularProgressIndicator()
                           : Text(
-                              "Sign Up",
+                              widget.titleText,
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
@@ -128,7 +130,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       SizedBox(width: 5,),
                       RichText(
                         text: TextSpan(
-                          text: "0321-8783630",
+                          text:"0321-8783630",
                           style: TextStyle(
                             color: Colors.blue[800],
                             fontWeight: FontWeight.w600,

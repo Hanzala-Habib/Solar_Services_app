@@ -14,13 +14,25 @@ class AuthRepository{
       );
       User? user = cred.user;
 
-      if (user != null) {
+      if (user != null && role!='employee'){
         await _firestore.collection("users").doc(user.uid).set({
           "id": user.uid,
           "name": name,
           "email": email,
           "role": role,
-        });
+          'access':true
+        }
+        );
+      }else if(user != null && (role=='employee'|| role=='Employee' || role=='Manager'||role=='manager')){
+        await _firestore.collection("Employees").doc(user.uid).set({
+          "id": user.uid,
+          "name": name,
+          "email": email,
+          "role": role,
+          'access':true
+
+        }
+        );
       }
       return user;
     } catch (e) {

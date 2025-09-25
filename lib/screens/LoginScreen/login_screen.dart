@@ -64,6 +64,7 @@ class LoginScreen extends StatelessWidget {
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           loginScreenController.login();
+                          loginScreenController.clear();
                         }
                       },
                       style: ElevatedButton.styleFrom(fixedSize: Size(300, 50)),

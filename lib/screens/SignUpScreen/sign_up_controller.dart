@@ -15,7 +15,7 @@ class SignUpController extends GetxController{
   final emailController = TextEditingController();
 
   final selectedRole = "Client".obs;
-  final roles = ["Client", "Manager", "Admin","Reseller"];
+  final roles = ["Client","Reseller"];
 
 
   void togglePasswordVisibility() {
@@ -38,7 +38,7 @@ class SignUpController extends GetxController{
           Get.offAllNamed("/ManagerScreen");
         } else if (selectedRole.value ==" Admin"){
           Get.offAllNamed("/adminScreen");
-        }else{
+        }else if(selectedRole.value=='Reseller'){
           Get.offAllNamed("/ResellerScreen");
         }
         Get.snackbar("Success", "Account created for ${user.email}");
