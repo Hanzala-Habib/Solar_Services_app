@@ -9,8 +9,8 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:get/get.dart';
 
 class SignUpScreen extends StatefulWidget {
-  final String titleText;
-  const SignUpScreen({super.key, this.titleText="Sign Up"});
+  final String buttonText;
+  const SignUpScreen({super.key, this.buttonText="Sign Up"});
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -63,8 +63,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Obx(
                     () => CustomDropdown(
                       label: "Select your Role",
-                      value:widget.titleText!="Sign Up" ? 'Employee': signUpController.selectedRole.value,
-                      items: widget.titleText!="Sign Up" ? ['Employee','Manager','Client'] : signUpController.roles,
+                      value:widget.buttonText=="Sign Up" ? signUpController.selectedRole.value: signUpController.adminSelectedRole.value,
+                      items: widget.buttonText=="Sign Up" ? signUpController.userRoles :signUpController.adminRoles ,
                       onChanged: (val) {
                         if (val != null) {
                           signUpController.selectedRole.value = val;
@@ -83,12 +83,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                   Obx(
                     () => ElevatedButton(
-                      onPressed: (){if (_formKey.currentState!.validate()) { signUpController.signup();}},
+                      onPressed: (){if (_formKey.currentState!.validate()) { if(widget.buttonText=="Create User"){
+
+                        signUpController.signup('Admin');
+                      }else{
+                        signUpController.signup('User');
+                      }
+    }},
                       style: ElevatedButton.styleFrom(fixedSize: Size(300, 50)),
                       child: signUpController.isLoading.value
                           ? CircularProgressIndicator()
                           : Text(
-                              widget.titleText,
+                              widget.buttonText,
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,

@@ -1,6 +1,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 
 class AuthRepository{
   final FirebaseAuth _auth=FirebaseAuth.instance;
@@ -14,7 +15,7 @@ class AuthRepository{
       );
       User? user = cred.user;
 
-      if (user != null && role!='employee'){
+      if (user != null && role!='Employee'){
         await _firestore.collection("users").doc(user.uid).set({
           "id": user.uid,
           "name": name,
@@ -36,8 +37,9 @@ class AuthRepository{
       }
       return user;
     } catch (e) {
-      rethrow;
+      Get.snackbar('Login failed','$e');
     }
+    return null;
   }
   Future<Map<String, dynamic>?> loginWithEmail(String email, String password) async {
     try {
@@ -48,9 +50,18 @@ class AuthRepository{
       User? user = cred.user;
 
       if (user != null) {
-        DocumentSnapshot snap =
-        await _firestore.collection("users").doc(user.uid).get();
-        return snap.data() as Map<String, dynamic>?;
+        DocumentSnapshot empSnap = await _firestore.collection("Employees").doc(user.uid).get();
+
+        if (empSnap.exists) {
+          return empSnap.data() as Map<String, dynamic>?;
+        }
+
+        DocumentSnapshot snap = await _firestore.collection("users").doc(user.uid).get();
+
+        if (snap.exists) {
+          return snap.data() as Map<String, dynamic>?;
+        }
+
       }
       return null;
     } catch (e) {

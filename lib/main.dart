@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:crmproject/screens/AdminScreen/admin_screen.dart';
 import 'package:crmproject/screens/ClientScreen/client_screen.dart';
+import 'package:crmproject/screens/EmployeeScreen/employee_screen.dart';
 import 'package:crmproject/screens/LoginScreen/login_screen.dart';
 import 'package:crmproject/screens/ManagerScreen/manager_profile_screen.dart';
 import 'package:crmproject/screens/ResellerScreen/reseller_profile_screen.dart';
@@ -122,6 +123,7 @@ class _MyAppState extends State<MyApp> {
         GetPage(name: "/ManagerScreen", page: () => const ManagerScreen()),
         GetPage(name: "/adminScreen", page: () => const AdminScreen()),
         GetPage(name: "/ResellerScreen", page: () => const ResellerScreen()),
+        GetPage(name: "/EmployeeScreen", page: () => const EmployeeScreen()),
       ],
       debugShowCheckedModeBanner: false,
     );

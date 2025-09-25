@@ -15,13 +15,15 @@ class SignUpController extends GetxController{
   final emailController = TextEditingController();
 
   final selectedRole = "Client".obs;
-  final roles = ["Client","Reseller"];
+  final adminSelectedRole='Employee'.obs;
+  final adminRoles=['Employee','Manager','Client'];
+  final userRoles = ["Client","Reseller"];
 
 
   void togglePasswordVisibility() {
     isPasswordHidden.value = !isPasswordHidden.value;
   }
-  Future<void> signup() async {
+  Future<void> signup(String creator) async {
     try {
       isLoading.value = true;
       final user = await _authRepository.registerWithEmail(
@@ -32,7 +34,7 @@ class SignUpController extends GetxController{
 
       );
       if (user != null) {
-        if (selectedRole.value == "Client") {
+        if (selectedRole.value == "Client" && creator!='Admin') {
           Get.offAllNamed("/ClientScreen");
         } else if (selectedRole.value == "Manager") {
           Get.offAllNamed("/ManagerScreen");
@@ -40,6 +42,10 @@ class SignUpController extends GetxController{
           Get.offAllNamed("/adminScreen");
         }else if(selectedRole.value=='Reseller'){
           Get.offAllNamed("/ResellerScreen");
+        } else if (selectedRole.value == "Employee" && creator!='Admin') {
+          Get.offAllNamed("/EmployeeScreen");
+        }else{
+          Get.offAllNamed("/adminScreen");
         }
         Get.snackbar("Success", "Account created for ${user.email}");
       }

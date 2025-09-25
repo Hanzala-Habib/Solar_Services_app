@@ -23,6 +23,7 @@ class LoginScreenController extends GetxController {
       final userData = await _authRepository.loginWithEmail(
         emailController.text.trim(),
         passwordController.text.trim(),
+
       );
 
 
@@ -40,10 +41,11 @@ class LoginScreenController extends GetxController {
            Get.offAllNamed("/ManagerScreen");
          } else if (role == "Admin"){
            Get.offAllNamed("/adminScreen");
+         }else if(role=="Employee"){
+           Get.offAllNamed("/EmployeeScreen");
          }else{
-
            Get.offAllNamed("/ClientScreen");
-         }
+       }
        }else{
          await FirebaseAuth.instance.signOut();
          Get.snackbar("Access Denied", "Your access is blocked by Admin.");

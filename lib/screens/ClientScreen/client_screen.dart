@@ -1,7 +1,6 @@
 import 'package:crmproject/data/models/category_model.dart';
-import 'package:crmproject/screens/LoginScreen/login_screen.dart';
+import 'package:crmproject/screens/ClientScreen/client_profile_screen.dart';
 import 'package:crmproject/screens/Product_list_screen/product_list_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
@@ -30,9 +29,9 @@ class ClientScreen extends StatelessWidget {
         ),),
         actions: [
           IconButton(onPressed: ()async{
-            await FirebaseAuth.instance.signOut();
-            Get.to(()=>LoginScreen());
-          }, icon: Icon(Icons.logout,color: Colors.white,))
+
+            Get.to(()=>ClientProfileScreen(dbname: 'users',));
+          }, icon: Icon(Icons.settings,color: Colors.white,))
         ],
         backgroundColor: Colors.deepPurple,
       ),
@@ -53,9 +52,7 @@ class ClientScreen extends StatelessWidget {
                   builder: (BuildContext context) {
                     return GestureDetector(
                       onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Clicked $cat")),
-                        );
+                       Get.to(()=>ProductListScreen(category: cat));
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width,

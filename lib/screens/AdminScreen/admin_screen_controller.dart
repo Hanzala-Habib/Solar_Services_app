@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 class AdminController extends GetxController {
   var users = <Map<String, dynamic>>[].obs;
+  var employees = <Map<String, dynamic>>[].obs;
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -21,14 +22,35 @@ class AdminController extends GetxController {
           .toList();
 
       users.assignAll(filtered);
+
     } catch (e) {
       Get.snackbar("Error", e.toString());
     }
   }
 
-  Future<void> updateAccess(String uid, bool access) async {
-    await _firestore.collection("users").doc(uid).update({"access": access});
-    await fetchUsers();
+  Future<void> fetchEmployees() async {
+    try {
+      final snapshot = await _firestore.collection('Employees').get();
+
+      final filtered = snapshot.docs
+          .map((doc) => {
+        "id": doc.id,
+        ...doc.data(),
+      }).toList();
+      employees.assignAll(filtered);
+
+    } catch (e) {
+      Get.snackbar("Error", e.toString());
+    }
+  }
+
+  Future<void> updateAccess(String uid, bool access,String collection) async {
+    await _firestore.collection(collection).doc(uid).update({"access": access});
+   if(collection=='Employees'){
+     await fetchUsers();
+   }else{
+     await fetchEmployees();
+   }
     Get.snackbar("Access Updated", access ? "User allowed " : "User blocked ");
   }
 
@@ -48,11 +70,15 @@ class AdminController extends GetxController {
   }
 
 
-  Future<void> deleteUser(String uid) async {
+  Future<void> deleteUser(String uid,String collection) async {
     try {
-      await _firestore.collection("users").doc(uid).delete();
+      await _firestore.collection(collection).doc(uid).delete();
       Get.snackbar("User Deleted", "User removed from system.");
-      await fetchUsers();
+      if(collection=='Employees'){
+        await fetchUsers();
+      }else{
+        await fetchEmployees();
+      }
     } catch (e) {
       Get.snackbar("Error", e.toString());
     }

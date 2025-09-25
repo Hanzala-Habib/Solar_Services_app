@@ -13,8 +13,9 @@ class ClientProfileScreen extends StatelessWidget {
   final ClientProfileController clientProfileController=Get.put(ClientProfileController());
   final AdminController adminController=Get.put(AdminController());
   final String name;
+  final String dbname;
   final _auth = FirebaseAuth.instance;
- ClientProfileScreen({super.key,this.name='SNM Products'});
+ ClientProfileScreen({super.key,this.name='SNM Products',thi, this.dbname='users'});
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +79,7 @@ class ClientProfileScreen extends StatelessWidget {
             )),
             SaveButton(
               onPressed: () async {
-                await clientProfileController.saveClientDetails();
+                await clientProfileController.saveClientDetails(dbname);
                 Get.offAll(() =>  ClientScreen(title: 'Client Products',));
               },
             ),

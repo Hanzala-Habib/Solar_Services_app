@@ -6,39 +6,20 @@ import 'package:get/get.dart';
 class ClientProfileController extends GetxController {
   final addressController = TextEditingController();
   final mobileController = TextEditingController();
-  var name = "".obs;
+
   var address = "".obs;
 
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
 
-  @override
-  void onInit() {
-    super.onInit();
-    fetchUserData();
-  }
 
-  Future<void> fetchUserData() async {
+
+  Future<void> updateAddress(String newAddress,String dbName) async {
     try {
       final uid = _auth.currentUser?.uid;
       if (uid == null) return;
 
-      final doc = await _firestore.collection("users").doc(uid).get();
-      if (doc.exists) {
-        name.value = doc["name"] ?? "";
-        address.value = doc["address"] ?? "";
-      }
-    } catch (e) {
-
-    }
-  }
-
-  Future<void> updateAddress(String newAddress) async {
-    try {
-      final uid = _auth.currentUser?.uid;
-      if (uid == null) return;
-
-      await _firestore.collection("users").doc(uid).update({
+      await _firestore.collection(dbName).doc(uid).update({
         "address": newAddress,
       });
 
@@ -49,18 +30,16 @@ class ClientProfileController extends GetxController {
     }
   }
 
-  Future<void> saveClientDetails() async {
+  Future<void> saveClientDetails(String dbname) async {
     try {
       final uid = _auth.currentUser?.uid;
       if (uid == null) return;
 
-      await _firestore.collection("users").doc(uid).set({
+      await _firestore.collection(dbname).doc(uid).set({
         "address": addressController.text.trim(),
         "mobileNumber": mobileController.text.trim(),
-        "role": "Reseller",
       }, SetOptions(merge: true));
 
-      Get.snackbar("Success", "Reseller details saved");
     } catch (e) {
       Get.snackbar("Error", e.toString());
     }
