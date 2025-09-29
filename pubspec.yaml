@@ -43,6 +43,10 @@ dependencies:
   get:
   cloud_firestore:
   carousel_slider: ^5.1.1
+  image_picker: ^1.1.2
+  dio: ^5.7.0
+  path_provider: ^2.1.5
+  firebase_storage: ^12.3.3
 
 dev_dependencies:
   flutter_test:
