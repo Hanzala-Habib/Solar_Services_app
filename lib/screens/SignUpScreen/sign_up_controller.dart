@@ -16,8 +16,8 @@ class SignUpController extends GetxController{
 
   final selectedRole = "Client".obs;
   final adminSelectedRole='Employee'.obs;
-  final adminRoles=['Employee','Manager','Client'];
-  final userRoles = ["Client","Reseller"];
+  final adminRoles=['Employee','Client'];
+  final userRoles = ["Client"];
 
 
   void togglePasswordVisibility() {
@@ -36,12 +36,8 @@ class SignUpController extends GetxController{
       if (user != null) {
         if (selectedRole.value == "Client" && creator!='Admin') {
           Get.offAllNamed("/ClientScreen");
-        } else if (selectedRole.value == "Manager") {
-          Get.offAllNamed("/ManagerScreen");
         } else if (selectedRole.value ==" Admin"){
           Get.offAllNamed("/adminScreen");
-        }else if(selectedRole.value=='Reseller'){
-          Get.offAllNamed("/ResellerScreen");
         } else if (selectedRole.value == "Employee" && creator!='Admin') {
           Get.offAllNamed("/EmployeeScreen");
         }else{

@@ -35,11 +35,7 @@ class LoginScreenController extends GetxController {
         Get.snackbar("Welcome", "access is ${access} approved");
 
        if(access==true){
-         if (role == "Reseller") {
-           Get.offAllNamed("/ResellerScreen");
-         } else if (role == "Manager") {
-           Get.offAllNamed("/ManagerScreen");
-         } else if (role == "Admin"){
+        if (role == "Admin"){
            Get.offAllNamed("/adminScreen");
          }else if(role=="Employee"){
            Get.offAllNamed("/EmployeeScreen");

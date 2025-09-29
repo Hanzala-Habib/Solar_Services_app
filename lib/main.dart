@@ -5,8 +5,6 @@ import 'package:crmproject/screens/ClientScreen/client_screen.dart';
 import 'package:crmproject/screens/EmployeeBillsScreen/employee_screen.dart';
 
 import 'package:crmproject/screens/LoginScreen/login_screen.dart';
-import 'package:crmproject/screens/ManagerScreen/manager_profile_screen.dart';
-import 'package:crmproject/screens/ResellerScreen/reseller_profile_screen.dart';
 import 'package:crmproject/screens/SignUpScreen/sign_up_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -106,7 +104,6 @@ class _MyAppState extends State<MyApp> {
 
           if (role == "Admin") return const AdminScreen();
           if (role == "Manager") return ClientScreen(title: 'Manager Products',);
-          if (role == "Reseller") return const ResellerScreen();
           return ClientScreen(); // default
         },
       );
@@ -121,9 +118,7 @@ class _MyAppState extends State<MyApp> {
         GetPage(name: "/signup", page: () => const SignUpScreen()),
         GetPage(name: "/login", page: () => LoginScreen()),
         GetPage(name: "/ClientScreen", page: () =>ClientScreen()),
-        GetPage(name: "/ManagerScreen", page: () => const ManagerScreen()),
         GetPage(name: "/adminScreen", page: () => const AdminScreen()),
-        GetPage(name: "/ResellerScreen", page: () => const ResellerScreen()),
         GetPage(name: "/EmployeeScreen", page: () =>  EmployeeScreen()),
       ],
       debugShowCheckedModeBanner: false,
