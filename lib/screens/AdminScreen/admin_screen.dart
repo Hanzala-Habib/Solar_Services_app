@@ -1,10 +1,14 @@
 import 'package:crmproject/screens/AdminScreen/admin_screen_controller.dart';
 import 'package:crmproject/screens/LoginScreen/login_screen.dart';
 import 'package:crmproject/screens/SignUpScreen/sign_up_screen.dart';
-import 'package:crmproject/utils/widgets/custom_list_card.dart';
+import 'package:crmproject/screens/Service%20Screen/create_service_screen.dart';
+import 'package:crmproject/utils/widgets/admin_services_card.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../Subscription Screen/create_subscription_screen.dart';
 
 class AdminScreen extends StatelessWidget {
   const AdminScreen({super.key});
@@ -31,45 +35,33 @@ class AdminScreen extends StatelessWidget {
         ],
       ),
       body:SingleChildScrollView(
-          child: Obx(
-            ()=> Padding(
+          child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 spacing: 10,
                 children: [
-                  Text("Employees",style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                      fontSize: 18
-                  ),),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: controller.employees.length,
-                      itemBuilder: (context, index) {
-                        final employee = controller.employees[index];
-                        return CustomListCard(user: employee, controller: controller,);
-                      },
-                    ),
-                  Text("Users",style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    fontSize: 18
-                  ),),
+                  AdminServicesCard(onPressed: (){
+                    Get.to(()=>CreateServiceScreen());
+                  },
+                  cardtext: "Create and manage Services",),
+                  AdminServicesCard(onPressed: (){
+                    Get.to(()=>CreateSubscriptionScreen());
+                  },
+                    cardtext: "Create Subscription for users",),
+                  AdminServicesCard(onPressed: (){
+                    Get.to(()=>CreateSubscriptionScreen());
+                  },
 
-              ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: controller.users.length,
-                    itemBuilder: (context, index) {
-                      final user = controller.users[index];
-                      return CustomListCard(user: user, controller: controller);
-                    },
-                  ),
+                    cardtext: "Manage Employees",),
+                  AdminServicesCard(onPressed: (){
+                    Get.to(()=>CreateSubscriptionScreen());
+                  },
+                    cardtext: "Client Management",),
 
                 ],
               ),
             ),
           ),
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Get.to(() => const SignUpScreen(buttonText: "Create User"));

@@ -46,7 +46,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '950913323152',
     projectId: 'crmproject-821b6',
     authDomain: 'crmproject-821b6.firebaseapp.com',
-    storageBucket: 'crmproject-821b6.firebasestorage.app',
+    storageBucket: 'crmproject-821b6.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
@@ -54,7 +54,7 @@ class DefaultFirebaseOptions {
     appId: '1:950913323152:android:dc623e1ed502fcf8ea4815',
     messagingSenderId: '950913323152',
     projectId: 'crmproject-821b6',
-    storageBucket: 'crmproject-821b6.firebasestorage.app',
+    storageBucket: 'crmproject-821b6.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -62,7 +62,7 @@ class DefaultFirebaseOptions {
     appId: '1:950913323152:ios:71c3c0c8d14d5b7dea4815',
     messagingSenderId: '950913323152',
     projectId: 'crmproject-821b6',
-    storageBucket: 'crmproject-821b6.firebasestorage.app',
+    storageBucket: 'crmproject-821b6.appspot.com',
     iosBundleId: 'com.example.crmproject',
   );
 
@@ -71,7 +71,7 @@ class DefaultFirebaseOptions {
     appId: '1:950913323152:ios:71c3c0c8d14d5b7dea4815',
     messagingSenderId: '950913323152',
     projectId: 'crmproject-821b6',
-    storageBucket: 'crmproject-821b6.firebasestorage.app',
+    storageBucket: 'crmproject-821b6.appspot.com',
     iosBundleId: 'com.example.crmproject',
   );
 
@@ -81,6 +81,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '950913323152',
     projectId: 'crmproject-821b6',
     authDomain: 'crmproject-821b6.firebaseapp.com',
-    storageBucket: 'crmproject-821b6.firebasestorage.app',
+    storageBucket: 'crmproject-821b6.appspot.com',
   );
 }

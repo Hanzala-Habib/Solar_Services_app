@@ -1,0 +1,84 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../Subscribe Servcice/subscribe_service_screen.dart';
+
+class ServiceDetailsScreen extends StatelessWidget {
+  final Map<String, dynamic> serviceData;
+
+  const ServiceDetailsScreen({super.key, required this.serviceData});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(serviceData['title'] ?? 'Service Details'),
+        backgroundColor: Colors.deepPurple,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                serviceData['title'] ?? '',
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.deepPurple,
+                ),
+              ),
+              const SizedBox(height: 10),
+
+              Text(
+                serviceData['description'] ?? 'No description available.',
+                style: const TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 20),
+
+              if (serviceData['price'] != null)
+                Text(
+                  "Price: ${serviceData['price']} PKR",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              const SizedBox(height: 10),
+
+              if (serviceData['duration'] != null)
+                Text(
+                  "Duration: ${serviceData['duration']}",
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SizedBox(
+          width: double.infinity,
+          height: 50,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.deepPurple,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            onPressed: () {
+              Get.to(() => OrderScreen(serviceData: serviceData));
+            },
+            child: Text("Subscribe Now", style: TextStyle(fontSize: 18)),
+          ),
+        ),
+      ),
+    );
+
+  }
+}

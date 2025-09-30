@@ -8,15 +8,18 @@ class SaveButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
+
       style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.deepPurple,
         fixedSize: Size(350, 40),
       ),
         onPressed: (){
        onPressed();
-      Get.snackbar('saves profile data', "your data is saved");
+      Get.snackbar('saves data', "your data is saved");
     }, child: Text("Save",style: TextStyle(
+      fontSize: 18,
       fontWeight: FontWeight.bold,
-      color: Colors.black
+      color: Colors.white
     ),));
   }
 }

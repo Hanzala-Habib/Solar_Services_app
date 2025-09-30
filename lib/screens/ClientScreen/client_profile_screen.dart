@@ -4,8 +4,6 @@ import 'package:crmproject/screens/ClientScreen/client_screen_controller.dart';
 import 'package:crmproject/screens/LoginScreen/login_screen.dart';
 import 'package:crmproject/utils/widgets/Save_button.dart';
 import 'package:crmproject/utils/widgets/custom_input_field.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,9 +12,7 @@ class ClientProfileScreen extends StatelessWidget {
   final AdminController adminController=Get.put(AdminController());
   final String name;
   final String dbname;
-  final _auth = FirebaseAuth.instance;
- ClientProfileScreen({super.key,this.name='SNM Products',thi, this.dbname='users'});
-
+ ClientProfileScreen({super.key,this.name='SNM Products', this.dbname='users'});
   @override
   Widget build(BuildContext context) {
 
@@ -34,8 +30,6 @@ class ClientProfileScreen extends StatelessWidget {
         leading: IconButton(onPressed: (){
           Get.back();
         }, icon: Icon(Icons.arrow_back,color: Colors.white,)),
-     
-
 
       ),
       body: SingleChildScrollView(
@@ -57,26 +51,6 @@ class ClientProfileScreen extends StatelessWidget {
               label: "Mobile Number",
               controller: clientProfileController.mobileController,
             ),
-            RichText(text: TextSpan(
-              text: "Reset Password",
-              style: TextStyle(
-                color: Colors.purple,
-                fontWeight: FontWeight.w600,
-                fontSize: 18,
-              ),
-              recognizer: TapGestureRecognizer()
-                ..onTap = (){
-
-
-                  final email =_auth.currentUser?.email;
-                  if (email != null) {
-                    adminController.resetPassword(email);
-                  } else {
-                    Get.snackbar("Error", "No email found for this user");
-                  }
-                }
-
-            )),
             SaveButton(
               onPressed: () async {
                 await clientProfileController.saveClientDetails(dbname);
