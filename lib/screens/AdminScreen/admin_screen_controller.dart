@@ -73,7 +73,7 @@ class AdminController extends GetxController {
   Future<void> deleteUser(String uid,String collection) async {
     try {
       await _firestore.collection(collection).doc(uid).delete();
-      Get.snackbar("User Deleted", "User removed from system.");
+      Get.snackbar("Deleted", "User removed from system.");
       if(collection!='Employee'){
         await fetchUsers();
 

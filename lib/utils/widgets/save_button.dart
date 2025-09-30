@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+
 class SaveButton extends StatelessWidget {
 
   final VoidCallback onPressed;
-  const SaveButton({super.key, required this.onPressed});
+  final String buttonText;
+  const SaveButton({super.key, required this.onPressed,  this.buttonText='Save'});
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +16,7 @@ class SaveButton extends StatelessWidget {
       ),
         onPressed: (){
        onPressed();
-      Get.snackbar('saves data', "your data is saved");
-    }, child: Text("Save",style: TextStyle(
+    }, child: Text(buttonText,style: TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.bold,
       color: Colors.white

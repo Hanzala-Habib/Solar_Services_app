@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class DescriptionField extends StatelessWidget {
-  final descriptionController=TextEditingController();
+  final TextEditingController? descriptionController;
   final String  hintText;
-DescriptionField({super.key, required this.hintText});
+DescriptionField({super.key, required this.hintText,this.descriptionController});
 
   @override
   Widget build(BuildContext context) {

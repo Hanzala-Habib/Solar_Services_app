@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class AdminScreen extends StatelessWidget {
+class AdminBillsScreen extends StatelessWidget {
   final BillController controller = Get.put(BillController());
 
   @override

@@ -9,6 +9,10 @@ class ServiceController extends GetxController {
 
   final _firestore = FirebaseFirestore.instance;
 
+  Future<void> deleteService(String id) async{
+    await _firestore.collection('services').doc(id).delete();
+    Get.snackbar("Deleted", "Service removed successfully");
+}
   Future<void> saveService() async {
     try {
       await _firestore.collection("services").add({
@@ -18,10 +22,10 @@ class ServiceController extends GetxController {
         "createdAt": FieldValue.serverTimestamp(),
       });
 
-      Get.snackbar("✅ Success", "Service saved successfully");
+      Get.snackbar("Success", "Service saved successfully");
       clearFields();
     } catch (e) {
-      Get.snackbar("❌ Error", e.toString());
+      Get.snackbar(" Error", e.toString());
     }
   }
 

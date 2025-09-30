@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../Subscribe Servcice/subscribe_service_screen.dart';
+import '../Subscribe Servcice/order_confirm_screen.dart';
 
 class ServiceDetailsScreen extends StatelessWidget {
   final Map<String, dynamic> serviceData;
@@ -12,7 +12,13 @@ class ServiceDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(serviceData['title'] ?? 'Service Details'),
+        iconTheme: IconThemeData(
+          color: Colors.white
+        ),
+        title: Text(serviceData['title'] ?? 'Service Details',style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold
+        ),),
         backgroundColor: Colors.deepPurple,
       ),
       body: Padding(
@@ -38,21 +44,17 @@ class ServiceDetailsScreen extends StatelessWidget {
               const SizedBox(height: 20),
 
               if (serviceData['price'] != null)
-                Text(
-                  "Price: ${serviceData['price']} PKR",
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              const SizedBox(height: 10),
-
-              if (serviceData['duration'] != null)
-                Text(
-                  "Duration: ${serviceData['duration']}",
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
+                Container(
+                  color: Colors.grey.withValues(alpha: 0.5),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Price: ${serviceData['price']} PKR",
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
                 ),
             ],
@@ -74,7 +76,7 @@ class ServiceDetailsScreen extends StatelessWidget {
             onPressed: () {
               Get.to(() => OrderScreen(serviceData: serviceData));
             },
-            child: Text("Subscribe Now", style: TextStyle(fontSize: 18)),
+            child: Text("Subscribe Now", style: TextStyle(fontSize: 18,color: Colors.white)),
           ),
         ),
       ),

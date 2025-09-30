@@ -11,37 +11,28 @@ class EmployeeManagementScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-        Text("Employees",style: TextStyle(
-              fontWeight: FontWeight.bold,
-                fontSize: 18
-            ),),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount:adminController.employees.length,
-                itemBuilder: (context, index) {
-                  final employee = adminController.employees[index];
-                  return CustomListCard(user: employee, controller: adminController,);
-                },
-              ),
-            Text("Users",style: TextStyle(
-                fontWeight: FontWeight.bold,
-              fontSize: 18
-            ),),
+    return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: Colors.deepPurple,
+        title: Text("Employees",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white),),
 
-        ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount:adminController.users.length,
-              itemBuilder: (context, index) {
-                final user = adminController.users[index];
-                return CustomListCard(user: user, controller: adminController);
-              },
-            ),
-        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount:adminController.employees.length,
+                  itemBuilder: (context, index) {
+                    final employee = adminController.employees[index];
+                    return CustomListCard(user: employee, controller: adminController,);
+                  },
+                ),
+
+          ],
+        ),
       ),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:crmproject/screens/AdminScreen/admin_screen_controller.dart';
+import 'package:crmproject/screens/AdminServiceManagementScreen/admin_service_management_screen.dart';
+import 'package:crmproject/screens/EmployeeManagement/employee_management_screen.dart';
 import 'package:crmproject/screens/LoginScreen/login_screen.dart';
-import 'package:crmproject/screens/SignUpScreen/sign_up_screen.dart';
-import 'package:crmproject/screens/Service%20Screen/create_service_screen.dart';
 import 'package:crmproject/utils/widgets/admin_services_card.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../Subscription Screen/create_subscription_screen.dart';
+import '../UserManagementScreen/user_management_screen.dart';
 
 class AdminScreen extends StatelessWidget {
   const AdminScreen({super.key});
@@ -22,6 +23,7 @@ class AdminScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("Admin Panel", style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.deepPurple,
         actions: [
@@ -41,20 +43,21 @@ class AdminScreen extends StatelessWidget {
                 spacing: 10,
                 children: [
                   AdminServicesCard(onPressed: (){
-                    Get.to(()=>CreateServiceScreen());
+                    Get.to(()=>AdminServiceManagementScreen());
                   },
                   cardtext: "Create and manage Services",),
                   AdminServicesCard(onPressed: (){
                     Get.to(()=>CreateSubscriptionScreen());
                   },
                     cardtext: "Create Subscription for users",),
-                  AdminServicesCard(onPressed: (){
-                    Get.to(()=>CreateSubscriptionScreen());
-                  },
 
-                    cardtext: "Manage Employees",),
                   AdminServicesCard(onPressed: (){
-                    Get.to(()=>CreateSubscriptionScreen());
+                    Get.to(()=>EmployeeManagementScreen());
+                  },
+                    cardtext: "Manage Employees",),
+
+                  AdminServicesCard(onPressed: (){
+                    Get.to(()=>UserManagementScreen());
                   },
                     cardtext: "Client Management",),
 
@@ -62,13 +65,7 @@ class AdminScreen extends StatelessWidget {
               ),
             ),
           ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.to(() => const SignUpScreen(buttonText: "Create User"));
-        },
-        backgroundColor: Colors.deepPurple,
-        child: const Icon(Icons.add, color: Colors.white),
-      ),
+
     );
   }
 }
