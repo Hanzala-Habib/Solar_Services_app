@@ -3,23 +3,25 @@ import 'package:crmproject/screens/SignUpScreen/sign_up_controller.dart';
 import 'package:crmproject/utils/widgets/custom_drop_down.dart';
 import 'package:crmproject/utils/widgets/custom_input_field.dart';
 import 'package:crmproject/utils/widgets/custom_password_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:get/get.dart';
 
+import '../../data/services/fcm_service.dart';
+
 class SignUpScreen extends StatefulWidget {
   final String buttonText;
-  const SignUpScreen({super.key, this.buttonText="Sign Up"});
+
+  const SignUpScreen({super.key, this.buttonText = "Sign Up"});
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
-
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-
-  final number='+923091678178';
+  final number = '+923091678178';
   final SignUpController signUpController = Get.put(SignUpController());
   final _formKey = GlobalKey<FormState>();
 
@@ -42,12 +44,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
-                        height: 110,width: 100,
-                        child: Image.asset('assets/images/snm-logo.png',fit: BoxFit.fill,),
+                        height: 110,
+                        width: 100,
+                        child: Image.asset(
+                          'assets/images/snm-logo.png',
+                          fit: BoxFit.fill,
+                        ),
                       ),
                       SizedBox(
-                          height:50,
-                          child: Image.asset('assets/images/Untitled-3.png')),
+                        height: 50,
+                        child: Image.asset('assets/images/Untitled-3.png'),
+                      ),
                     ],
                   ),
 
@@ -63,8 +70,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Obx(
                     () => CustomDropdown(
                       label: "Select your Role",
-                      value:widget.buttonText=="Sign Up" ? signUpController.selectedRole.value: signUpController.adminSelectedRole.value,
-                      items: widget.buttonText=="Sign Up" ? signUpController.userRoles :signUpController.adminRoles ,
+                      value: widget.buttonText == "Sign Up"
+                          ? signUpController.selectedRole.value
+                          : signUpController.adminSelectedRole.value,
+                      items: widget.buttonText == "Sign Up"
+                          ? signUpController.userRoles
+                          : signUpController.adminRoles,
                       onChanged: (val) {
                         if (val != null) {
                           signUpController.selectedRole.value = val;
@@ -83,12 +94,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                   Obx(
                     () => ElevatedButton(
-                      onPressed: (){if (_formKey.currentState!.validate()) { if(widget.buttonText=="Create User" || widget.buttonText=="Add Employee"){
-                        signUpController.signup('Admin');
-                      }else{
-                        signUpController.signup('User');
-                      }
-    }},
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          if (widget.buttonText == "Create User" ||
+                              widget.buttonText == "Add Employee") {
+                            signUpController.signup('Admin');
+                            final user = FirebaseAuth.instance.currentUser;
+                            if (user != null) {
+                              await FCMService.saveTokenToFirestore(user.uid);
+                            }
+                          } else {
+                            signUpController.signup('User');
+                            final user = FirebaseAuth.instance.currentUser;
+                            if (user != null) {
+                              await FCMService.saveTokenToFirestore(user.uid);
+                            }
+                          }
+                        }
+                      },
                       style: ElevatedButton.styleFrom(fixedSize: Size(300, 50)),
                       child: signUpController.isLoading.value
                           ? CircularProgressIndicator()
@@ -131,20 +154,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.call,size: 22,),
-                      SizedBox(width: 5,),
+                      Icon(Icons.call, size: 22),
+                      SizedBox(width: 5),
                       RichText(
                         text: TextSpan(
-                          text:"0321-8783630",
+                          text: "0321-8783630",
                           style: TextStyle(
                             color: Colors.blue[800],
                             fontWeight: FontWeight.w600,
                             fontSize: 18,
                           ),
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () async{
+                            ..onTap = () async {
                               await FlutterPhoneDirectCaller.callNumber(number);
-                              Get.snackbar("Calling to SNM solutions", "Please wait out support agent will get to you soon");
+                              Get.snackbar(
+                                "Calling to SNM solutions",
+                                "Please wait out support agent will get to you soon",
+                              );
                             },
                         ),
                       ),

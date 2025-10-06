@@ -40,6 +40,7 @@ class ClientScreen extends StatelessWidget {
             onSelected: (value) async {
               if (value == 'logout') {
                 await FirebaseAuth.instance.signOut();
+
                 Get.to(() => LoginScreen());
               } else if (value == 'reset') {
                 controller.resetPassword(email!);
@@ -85,7 +86,9 @@ class ClientScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: StreamBuilder<QuerySnapshot>(
+        child:  FirebaseAuth.instance.currentUser == null
+            ? const Center(child: CircularProgressIndicator())
+            :StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance.collection('services').snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -346,7 +349,7 @@ class ClientScreen extends StatelessWidget {
           return Container(
             height: 300,
             decoration: BoxDecoration(
-              color: Colors.orangeAccent,
+              color: Colors.white,
               borderRadius: BorderRadius.circular(35),
             ),
             padding: const EdgeInsets.all(16),

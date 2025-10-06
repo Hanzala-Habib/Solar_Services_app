@@ -67,7 +67,6 @@ class LoginScreen extends StatelessWidget {
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             await loginScreenController.login();  // wait for login
-
                             final user = FirebaseAuth.instance.currentUser;
                             if (user != null) {
                               await FCMService.saveTokenToFirestore(user.uid);
