@@ -83,8 +83,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                   Obx(
                     () => ElevatedButton(
-                      onPressed: (){if (_formKey.currentState!.validate()) { if(widget.buttonText=="Create User"){
-
+                      onPressed: (){if (_formKey.currentState!.validate()) { if(widget.buttonText=="Create User" || widget.buttonText=="Add Employee"){
                         signUpController.signup('Admin');
                       }else{
                         signUpController.signup('User');

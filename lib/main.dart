@@ -1,9 +1,7 @@
 import 'dart:developer';
-
 import 'package:crmproject/screens/AdminScreen/admin_screen.dart';
 import 'package:crmproject/screens/ClientScreen/client_screen.dart';
-import 'package:crmproject/screens/EmployeeBillsScreen/employee_screen.dart';
-
+import 'package:crmproject/screens/EmployeeScreen/employee_screen.dart';
 import 'package:crmproject/screens/LoginScreen/login_screen.dart';
 import 'package:crmproject/screens/SignUpScreen/sign_up_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -14,6 +12,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'data/services/local_notification_service.dart';
+import 'data/services/notification_services.dart';
+
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   log("Background/Terminated message: ${message.notification?.title}");
 }
@@ -21,6 +22,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  LocalNotificationService.init();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   runApp(const MyApp());
@@ -34,7 +36,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String? _token = "";
 
   @override
   void initState() {
@@ -42,33 +43,24 @@ class _MyAppState extends State<MyApp> {
     _initFCM();
   }
 
+
   Future<void> _initFCM() async {
     await FirebaseMessaging.instance.requestPermission();
 
-    String? token = await FirebaseMessaging.instance.getToken();
-    setState(() => _token = token);
-    print(" FCM Token: $_token");
-
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print(" Foreground message: ${message.notification?.title}");
-      showDialog(
-        context: context,
-        builder: (_) => AlertDialog(
-          title: Text(message.notification?.title ?? "No Title"),
-          content: Text(message.notification?.body ?? "No Body"),
-        ),
-      );
-    });
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        NotificationService.handleMessage(message, context);
+      });
 
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print(" Opened from background: ${message.notification?.title}");
-      _showPage("Opened from background: ${message.notification?.title}");
+      FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+        _showPage("Opened from background: ${message.notification?.title}");
+      });
+
     });
 
     RemoteMessage? initialMessage =
     await FirebaseMessaging.instance.getInitialMessage();
     if (initialMessage != null) {
-      print(" Opened from terminated: ${initialMessage.notification?.title}");
       _showPage(
           "Opened from terminated: ${initialMessage.notification?.title}");
     }
@@ -104,7 +96,7 @@ class _MyAppState extends State<MyApp> {
 
           if (role == "Admin") return const AdminScreen();
           if (role == "Manager") return ClientScreen(title: 'Manager Products',);
-          return ClientScreen(); // default
+          return ClientScreen();
         },
       );
     }
@@ -119,7 +111,7 @@ class _MyAppState extends State<MyApp> {
         GetPage(name: "/login", page: () => LoginScreen()),
         GetPage(name: "/ClientScreen", page: () =>ClientScreen()),
         GetPage(name: "/adminScreen", page: () => const AdminScreen()),
-        GetPage(name: "/EmployeeScreen", page: () =>  EmployeeScreen()),
+        GetPage(name: "/EmployeeScreen", page: () =>  EmployeeServicesScreen()),
       ],
       debugShowCheckedModeBanner: false,
     );

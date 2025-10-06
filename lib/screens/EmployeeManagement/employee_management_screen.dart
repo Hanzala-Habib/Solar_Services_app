@@ -1,5 +1,6 @@
 
 import 'package:crmproject/screens/AdminScreen/admin_screen_controller.dart';
+import 'package:crmproject/screens/SignUpScreen/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -33,6 +34,12 @@ class EmployeeManagementScreen extends StatelessWidget {
 
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(onPressed: (){
+        Get.to(()=>SignUpScreen(buttonText: 'Add Employee',));
+      },
+        backgroundColor: Colors.deepPurple,
+        child: const Icon(Icons.add, color: Colors.white,fontWeight:FontWeight.bold,),
       ),
     );
   }

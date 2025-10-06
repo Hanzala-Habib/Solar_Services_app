@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../utils/widgets/custom_list_card.dart';
+import '../SignUpScreen/sign_up_screen.dart';
 
 class UserManagementScreen extends StatelessWidget {
   final AdminController adminController=Get.put(AdminController());
@@ -33,6 +34,12 @@ class UserManagementScreen extends StatelessWidget {
             
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(onPressed: (){
+        Get.to(()=>SignUpScreen(buttonText: 'Add Employee',));
+      },
+        backgroundColor: Colors.deepPurple,
+        child: const Icon(Icons.add, color: Colors.white,fontWeight:FontWeight.bold,),
       ),
     );
   }

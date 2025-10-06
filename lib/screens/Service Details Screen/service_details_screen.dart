@@ -10,12 +10,13 @@ class ServiceDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("ServiceData received: $serviceData");
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
           color: Colors.white
         ),
-        title: Text(serviceData['title'] ?? 'Service Details',style: TextStyle(
+        title: Text('Service Details',style: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold
         ),),
@@ -26,9 +27,12 @@ class ServiceDetailsScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+
             children: [
+
               Text(
-                serviceData['title'] ?? '',
+
+                serviceData['title'] ?? 'no id found',
                 style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -76,7 +80,7 @@ class ServiceDetailsScreen extends StatelessWidget {
             onPressed: () {
               Get.to(() => OrderScreen(serviceData: serviceData));
             },
-            child: Text("Subscribe Now", style: TextStyle(fontSize: 18,color: Colors.white)),
+            child: Text("Buy Service", style: TextStyle(fontSize: 18,color: Colors.white)),
           ),
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:crmproject/screens/AdminScreen/admin_screen_controller.dart';
 import 'package:crmproject/screens/AdminServiceManagementScreen/admin_service_management_screen.dart';
+import 'package:crmproject/screens/CreatePackagesScreen/create_packages_screen.dart';
 import 'package:crmproject/screens/EmployeeManagement/employee_management_screen.dart';
 import 'package:crmproject/screens/LoginScreen/login_screen.dart';
 import 'package:crmproject/utils/widgets/admin_services_card.dart';
@@ -7,8 +8,6 @@ import 'package:crmproject/utils/widgets/admin_services_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../Subscription Screen/create_subscription_screen.dart';
 import '../UserManagementScreen/user_management_screen.dart';
 
 class AdminScreen extends StatelessWidget {
@@ -47,9 +46,11 @@ class AdminScreen extends StatelessWidget {
                   },
                   cardtext: "Create and manage Services",),
                   AdminServicesCard(onPressed: (){
-                    Get.to(()=>CreateSubscriptionScreen());
+                    Get.to(()=>CreatePackageScreen());
                   },
-                    cardtext: "Create Subscription for users",),
+                    cardtext: "Create Packages for users",),
+
+
 
                   AdminServicesCard(onPressed: (){
                     Get.to(()=>EmployeeManagementScreen());

@@ -47,7 +47,11 @@ dependencies:
   dio: ^5.7.0
   path_provider: ^2.1.5
   firebase_storage: ^12.3.3
-  intl: 
+  intl:
+  geolocator: ^10.1.0
+  google_maps_flutter: ^2.6.1
+  timezone: ^0.10.0
+  flutter_local_notifications: ^19.4.2
 
 dev_dependencies:
   flutter_test:

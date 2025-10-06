@@ -15,12 +15,16 @@ class ServiceController extends GetxController {
 }
   Future<void> saveService() async {
     try {
+      // DocumentReference docRef =
       await _firestore.collection("services").add({
         "title": titleController.text.trim(),
         "price": double.tryParse(priceController.text.trim()) ?? 0.0,
         "description": descriptionController.text.trim(),
         "createdAt": FieldValue.serverTimestamp(),
       });
+      // await docRef.update(<String, dynamic>{
+      //   "id": docRef.id,
+      // });
 
       Get.snackbar("Success", "Service saved successfully");
       clearFields();

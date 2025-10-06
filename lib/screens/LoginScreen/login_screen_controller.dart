@@ -26,7 +26,6 @@ class LoginScreenController extends GetxController {
 
       );
 
-
       if (userData != null) {
         String role = userData["role"] ?? "Client";
         bool access=userData["access"] ?? true;

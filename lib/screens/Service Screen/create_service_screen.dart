@@ -32,7 +32,8 @@ class CreateServiceScreen extends StatelessWidget {
               CustomInputField(label: 'Service Title',controller: serviceController.titleController,),
               CustomInputField(label: 'Price',keyboardType: TextInputType.number,controller: serviceController.priceController,),
               DescriptionField(hintText: 'Enter the service description which helps user to better understand......',descriptionController: serviceController.descriptionController,),
-              SaveButton(onPressed: ()=>{serviceController.saveService(),
+              SaveButton(onPressed: ()=>{
+                serviceController.saveService(),
               Get.off(()=>AdminServiceManagementScreen())})
 
             ],

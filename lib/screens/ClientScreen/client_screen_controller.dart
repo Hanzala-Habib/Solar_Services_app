@@ -4,22 +4,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../data/models/service_model.dart';
+import '../UserSubscriptionScreen/user_subscription_controller.dart';
 
 class ClientProfileController extends GetxController {
   final addressController = TextEditingController();
   final mobileController = TextEditingController();
-
   var address = "".obs;
 
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
+  final subscriptionController=Get.put(SubscriptionController());
   var services = <ServiceModel>[].obs;
   @override
   void onInit() {
     super.onInit();
     fetchServices();
+    subscriptionController.checkAndUpdateSubscriptions();
   }
-  void fetchServices() {
+  void fetchServices(){
     _firestore.collection("services").orderBy("createdAt", descending: true).snapshots().listen((snapshot) {
       services.value = snapshot.docs
           .map((doc) => ServiceModel.fromMap(doc.id, doc.data()))
