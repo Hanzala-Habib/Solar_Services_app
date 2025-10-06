@@ -40,8 +40,7 @@ class ClientScreen extends StatelessWidget {
             onSelected: (value) async {
               if (value == 'logout') {
                 await FirebaseAuth.instance.signOut();
-
-                Get.to(() => LoginScreen());
+                Get.offAll(() => LoginScreen());
               } else if (value == 'reset') {
                 controller.resetPassword(email!);
               } else if (value == 'address') {
