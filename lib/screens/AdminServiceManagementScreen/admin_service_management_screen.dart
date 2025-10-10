@@ -3,7 +3,6 @@ import 'package:crmproject/screens/AdminScreen/admin_screen.dart';
 import 'package:crmproject/screens/Service%20Screen/create_service_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../Service Details Screen/service_details_screen.dart';
 import '../Service Screen/service_screen_controller.dart';
 
 class AdminServiceManagementScreen extends StatelessWidget {
@@ -54,88 +53,83 @@ class AdminServiceManagementScreen extends StatelessWidget {
                 final service = services[index];
                 final name = service['title'] ?? 'Unnamed Service';
 
-                return GestureDetector(
-                  onTap: () {
-                    Get.to(
-                      () => ServiceDetailsScreen(
-                        serviceData: service.data() as Map<String, dynamic>,
-                      ),
-                    );
-                  },
-                  child: Card(
-                    color: Colors.blueGrey[100],
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.deepOrange,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(12),
-                                topRight: Radius.circular(12),
-                              ),
+                return Card(
+                  color: Colors.blueGrey[100],
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          height: 70,
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(12),
+                              topRight: Radius.circular(12),
                             ),
-                            height: 70,
+                            image: DecorationImage(
+                              image: NetworkImage(service['imageUrl'] ),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    name,
-                                    style: const TextStyle(
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  name,
+                                  softWrap: true,
+                                  style: const TextStyle(
+                                    fontSize: 12.0,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  Text(
-                                    ' Rs. ${service['price'].toString()}',
-                                    style: const TextStyle(
-                                      fontSize: 12.0,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.pink,
-                                    ),
+                                ),
+                                Text(
+                                  ' Rs. ${service['price'].toString()}',
+                                  style: const TextStyle(
+                                    fontSize: 12.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.pink,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 30,
+                              child: PopupMenuButton<String>(
+                                icon: const Icon(
+                                  Icons.more_vert,
+                                  color: Colors.black,
+                                ),
+                                onSelected: (value) async {
+                                  if (value == 'Delete') {
+                                    serviceController.deleteService(
+                                      service.id,
+                                    );
+                                  } else if (value == 'Edit') {
+                                    Get.to(() => CreateServiceScreen());
+                                  }
+                                },
+                                itemBuilder: (BuildContext context) => [
+                                  PopupMenuItem(
+                                    value: 'Delete',
+                                    child: Text("Delete"),
+                                  ),
+                                  PopupMenuItem(
+                                    value: 'Edit',
+                                    child: Text("Edit"),
                                   ),
                                 ],
                               ),
-                              SizedBox(
-                                width: 30,
-                                child: PopupMenuButton<String>(
-                                  icon: const Icon(
-                                    Icons.more_vert,
-                                    color: Colors.black,
-                                  ),
-                                  onSelected: (value) async {
-                                    if (value == 'Delete') {
-                                      serviceController.deleteService(
-                                        service.id,
-                                      );
-                                    } else if (value == 'Edit') {
-                                      Get.to(() => CreateServiceScreen());
-                                    }
-                                  },
-                                  itemBuilder: (BuildContext context) => [
-                                    PopupMenuItem(
-                                      value: 'Delete',
-                                      child: Text("Delete"),
-                                    ),
-                                    PopupMenuItem(
-                                      value: 'Edit',
-                                      child: Text("Edit"),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 );
               },

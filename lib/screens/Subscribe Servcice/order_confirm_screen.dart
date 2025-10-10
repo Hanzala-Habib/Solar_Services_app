@@ -4,7 +4,7 @@ import 'package:crmproject/screens/UserSubscriptionScreen/user_subscription_cont
 import 'package:crmproject/utils/widgets/save_button.dart';
 import 'package:crmproject/utils/widgets/custom_date_time_field.dart';
 import 'package:crmproject/utils/widgets/custom_input_field.dart';
-import 'package:crmproject/utils/widgets/custom_time_selection_field.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -35,12 +35,9 @@ class OrderScreen extends StatelessWidget {
           spacing: 10,
           children: [
             CustomInputField(
+              controller:controller.mobileNumber,
               label: "Mobile Number",
               keyboardType: TextInputType.phone,
-            ),
-            CustomTimeSelectionField(
-              label: "Select Time",
-              controller: controller.timeController,
             ),
             CustomDateField(
               label: "Select Date",
@@ -58,6 +55,8 @@ class OrderScreen extends StatelessWidget {
                   userId: subscribeController.auth.currentUser!.uid,
                   serviceId: serviceData['id'],
                   scheduledDate: controller.scheduledDate,
+                  mobileNumber: controller.mobileNumber.text.trim()
+
                   // scheduledTime: controller.timeController.value
                 );
 

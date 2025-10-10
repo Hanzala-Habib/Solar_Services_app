@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
+
 import '../Service Details Screen/service_details_screen.dart';
 import '../UserSubscriptionScreen/user_subscription_controller.dart';
 import 'client_screen_controller.dart';
@@ -24,6 +25,12 @@ class ClientScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    // final user = FirebaseAuth.instance.currentUser;
+    // if (user != null) {
+    //   WidgetsBinding.instance.addPostFrameCallback((_) {
+    //     RatingService.checkAndShowRatingDialog(context, user.uid);
+    //   });
+    // }
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -84,7 +91,7 @@ class ClientScreen extends StatelessWidget {
         backgroundColor: Colors.deepPurple,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(8.0),
         child:  FirebaseAuth.instance.currentUser == null
             ? const Center(child: CircularProgressIndicator())
             :StreamBuilder<QuerySnapshot>(
@@ -92,9 +99,6 @@ class ClientScreen extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
-            }
-            if (snapshot.hasError) {
-              return const Center(child: Text("Error fetching services"));
             }
 
             final services = snapshot.data!.docs;
@@ -117,7 +121,7 @@ class ClientScreen extends StatelessWidget {
                   ),
                   items: services.asMap().entries.map((entry){
                     final index=entry.key;
-                    final service=entry.value;
+                    final service=clientController.services[index];
                     return Builder(
                       builder: (BuildContext context) {
                         return GestureDetector(
@@ -125,7 +129,7 @@ class ClientScreen extends StatelessWidget {
 
                             Get.to(
                               () => ServiceDetailsScreen(
-                                serviceData: clientController.services[index].toMap(),
+                                serviceData: service.toMap(),
 
                               ),
                             );
@@ -136,14 +140,18 @@ class ClientScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Expanded(
-                                  child: Container(
-                                    height: 110,
+                                  child:  Container(
+                                    height: 80,
 
+                                    width: 300,
                                     decoration: BoxDecoration(
-                                      color: Colors.brown,
-                                      borderRadius: BorderRadius.only(
+                                      borderRadius: const BorderRadius.only(
                                         topLeft: Radius.circular(12),
                                         topRight: Radius.circular(12),
+                                      ),
+                                      image: DecorationImage(
+                                        image: NetworkImage(service.imageUrl),
+                                        fit: BoxFit.cover, // makes it fill the box nicely
                                       ),
                                     ),
                                   ),
@@ -151,12 +159,12 @@ class ClientScreen extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
 
-                                        service['title'],
+                                        service.title,
+
                                         style: TextStyle(
 
                                           fontSize: 14.0,
@@ -164,15 +172,19 @@ class ClientScreen extends StatelessWidget {
                                           color: Colors.deepPurple,
                                         ),
                                         softWrap: true,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
-                                      Text(
-                                        'Rs. ${service['price'].toString()}',
-                                        style: TextStyle(
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.bold,
-                                            color: Colors.pink
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 8.0),
+                                        child: Text(
+                                          'Rs. ${service.price.toString()}',
+                                          style: TextStyle(
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold,
+                                              color: Colors.pink
+                                          ),
+                                          softWrap: true,
                                         ),
-                                        softWrap: true,
                                       ),
                                     ],
                                   ),
@@ -200,8 +212,8 @@ class ClientScreen extends StatelessWidget {
                         ),
                     itemCount: services.length,
                     itemBuilder: (BuildContext context, int index) {
-                      final service = services[index];
-                      final name = service['title'] ?? 'Unnamed Service';
+                      final service =clientController.services[index];
+                      final name = service.title;
 
                       return GestureDetector(
                         onTap: () {
@@ -217,42 +229,41 @@ class ClientScreen extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Container(
+                                  height: 70,
                                   decoration: BoxDecoration(
-                                    color: Colors.deepOrange,
-                                    borderRadius: BorderRadius.only(
+                                    borderRadius: const BorderRadius.only(
                                       topLeft: Radius.circular(12),
                                       topRight: Radius.circular(12),
-
+                                    ),
+                                    image: DecorationImage(
+                                      image: NetworkImage(service.imageUrl ),
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
-                                  height: 70,
-
                                 ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Row(
+                                child: Column(
+                                  crossAxisAlignment:CrossAxisAlignment.start,
                                   children: [
-                                    Column(
-                                      crossAxisAlignment:CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          name,
-                                          style: const TextStyle(
-                                            fontSize: 12.0,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(
-                                        ' Rs. ${service['price'].toString()}',
-                                          style: const TextStyle(
-                                            fontSize: 12.0,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.pink
-                                          ),
-                                          softWrap: true,
-                                        ),
-                                      ],
+                                    Text(
+                                      name,
+                                      style: const TextStyle(
+                                        fontSize: 12.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      softWrap: true,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Text(
+                                    ' Rs. ${service.price.toString()}',
+                                      style: const TextStyle(
+                                        fontSize: 12.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.pink
+                                      ),
+                                      softWrap: true,
                                     ),
                                   ],
                                 ),
@@ -316,7 +327,7 @@ class ClientScreen extends StatelessWidget {
       }
 
       return FutureBuilder<Map<String, dynamic>?>(
-        future: loadPackageWithServiceNames(), // CHANGED: actually load package doc & service names
+        future: loadPackageWithServiceNames(),
         builder: (context, snap) {
           if (snap.connectionState == ConnectionState.waiting) {
             return Container(
@@ -327,15 +338,7 @@ class ClientScreen extends StatelessWidget {
           }
 
           if (!snap.hasData || snap.data == null) {
-            return Container(
-              height: 120,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.deepPurple.shade50
-              ),
-              padding: const EdgeInsets.all(16),
-              child: const Center(child: Text("No package available")),
-            );
+            return SizedBox.shrink();
           }
 
           final packageData = snap.data!;
@@ -446,3 +449,5 @@ class ClientScreen extends StatelessWidget {
     );
   }
 }
+
+

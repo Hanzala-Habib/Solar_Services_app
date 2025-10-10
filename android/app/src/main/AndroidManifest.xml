@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.CALL_PHONE"/>
+
     <application
-        android:label="crmproject"
+        android:label="SNM Solutions"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

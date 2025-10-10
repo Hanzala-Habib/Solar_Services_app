@@ -24,14 +24,13 @@ class AuthRepository{
           'access':true
         }
         );
-      }else if(user != null && (role=='employee'|| role=='Employee' || role=='Manager'||role=='manager')){
+      }else if(user != null && role=='Employee'){
         await _firestore.collection("Employees").doc(user.uid).set({
           "id": user.uid,
           "name": name,
           "email": email,
           "role": role,
           'access':true
-
         }
         );
       }

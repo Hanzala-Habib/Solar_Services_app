@@ -69,10 +69,10 @@ class LoginScreen extends StatelessWidget {
                             await loginScreenController.login();  // wait for login
                             final user = FirebaseAuth.instance.currentUser;
                             if (user != null) {
-                              await FCMService.saveTokenToFirestore(user.uid);
-                              print("✅ Token saved for user: ${user.uid}");
+                              await FCMService.saveTokenToFirestore(user.uid,);
+
                             } else {
-                              print("⚠️ User is null, token not saved");
+                             Get.snackbar("Token is null", "missing fcm token");
                             }
 
 

@@ -77,8 +77,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ? signUpController.userRoles
                           : signUpController.adminRoles,
                       onChanged: (val) {
-                        if (val != null) {
+                        if (val != null && widget.buttonText=="Sign Up") {
                           signUpController.selectedRole.value = val;
+                        }else if(val != null && widget.buttonText=="Add Employee"){
+                          signUpController.adminSelectedRole.value;
                         }
                       },
                     ),
@@ -96,16 +98,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     () => ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
-                          await signUpController.signup(widget.buttonText == "Create User" || widget.buttonText == "Add Employee" ? 'Admin' : 'User');
 
-                          await Future.delayed(const Duration(seconds: 1)); // Wait for Firebase to set currentUser
 
+                          await signUpController.signup(widget.buttonText == "Create User" || widget.buttonText == "Add Employee" ? 'Admin' : 'Client');
                           final user = FirebaseAuth.instance.currentUser;
+
                           if (user != null) {
                             await FCMService.saveTokenToFirestore(user.uid);
-                            print("✅ Token saved for user: ${user.uid}");
+                            print('token saves  in signup screen');
                           } else {
-                            print("⚠️ User is null, token not saved");
+                            print("User is null, token not saved");
                           }
                         }
                       },

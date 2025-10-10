@@ -41,46 +41,47 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDZPsgInyy_hebDsZ9vqSHQWAPRYaY4PHs',
-    appId: '1:950913323152:web:84a2ef691a4f37b2ea4815',
-    messagingSenderId: '950913323152',
-    projectId: 'crmproject-821b6',
-    authDomain: 'crmproject-821b6.firebaseapp.com',
-    storageBucket: 'crmproject-821b6.appspot.com',
+    apiKey: 'AIzaSyBEZnEF_spF3fiNi0_8sD6iHgBeLzdshfU',
+    appId: '1:991280352943:web:ccd10835ac6ebeeb844e5a',
+    messagingSenderId: '991280352943',
+    projectId: 'snm-solutions',
+    authDomain: 'snm-solutions.firebaseapp.com',
+    storageBucket: 'snm-solutions.firebasestorage.app',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAQVz8mNWXPRaugBunw7YBWr1_u05S5zYs',
-    appId: '1:950913323152:android:dc623e1ed502fcf8ea4815',
-    messagingSenderId: '950913323152',
-    projectId: 'crmproject-821b6',
-    storageBucket: 'crmproject-821b6.appspot.com',
+    apiKey: 'AIzaSyCTzG6ylMsaU1Vo_L49CiUBoeMgqzytr_0',
+    appId: '1:991280352943:android:2dd83d65dc679337844e5a',
+    messagingSenderId: '991280352943',
+    projectId: 'snm-solutions',
+    storageBucket: 'snm-solutions.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBGZPX36YvUUWA62Ja8v0Z4LKAGjH-ZbvE',
-    appId: '1:950913323152:ios:71c3c0c8d14d5b7dea4815',
-    messagingSenderId: '950913323152',
-    projectId: 'crmproject-821b6',
-    storageBucket: 'crmproject-821b6.appspot.com',
+    apiKey: 'AIzaSyA1yGrisxwI0MecGuk03VHfbjvZVy1im2o',
+    appId: '1:991280352943:ios:75ce9afd46604f55844e5a',
+    messagingSenderId: '991280352943',
+    projectId: 'snm-solutions',
+    storageBucket: 'snm-solutions.firebasestorage.app',
     iosBundleId: 'com.example.crmproject',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBGZPX36YvUUWA62Ja8v0Z4LKAGjH-ZbvE',
-    appId: '1:950913323152:ios:71c3c0c8d14d5b7dea4815',
-    messagingSenderId: '950913323152',
-    projectId: 'crmproject-821b6',
-    storageBucket: 'crmproject-821b6.appspot.com',
+    apiKey: 'AIzaSyA1yGrisxwI0MecGuk03VHfbjvZVy1im2o',
+    appId: '1:991280352943:ios:75ce9afd46604f55844e5a',
+    messagingSenderId: '991280352943',
+    projectId: 'snm-solutions',
+    storageBucket: 'snm-solutions.firebasestorage.app',
     iosBundleId: 'com.example.crmproject',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDZPsgInyy_hebDsZ9vqSHQWAPRYaY4PHs',
-    appId: '1:950913323152:web:c6ccec9b69bb738cea4815',
-    messagingSenderId: '950913323152',
-    projectId: 'crmproject-821b6',
-    authDomain: 'crmproject-821b6.firebaseapp.com',
-    storageBucket: 'crmproject-821b6.appspot.com',
+    apiKey: 'AIzaSyBEZnEF_spF3fiNi0_8sD6iHgBeLzdshfU',
+    appId: '1:991280352943:web:0dbd5fd23d5fa155844e5a',
+    messagingSenderId: '991280352943',
+    projectId: 'snm-solutions',
+    authDomain: 'snm-solutions.firebaseapp.com',
+    storageBucket: 'snm-solutions.firebasestorage.app',
   );
+
 }

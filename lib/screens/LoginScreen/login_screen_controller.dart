@@ -30,9 +30,6 @@ class LoginScreenController extends GetxController {
         String role = userData["role"] ?? "Client";
         bool access=userData["access"] ?? true;
 
-        Get.snackbar("Welcome", "Logged in as $role");
-        Get.snackbar("Welcome", "access is ${access} approved");
-
        if(access==true){
         if (role == "Admin"){
            Get.offAllNamed("/adminScreen");

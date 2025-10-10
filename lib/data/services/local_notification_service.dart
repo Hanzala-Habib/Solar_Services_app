@@ -40,4 +40,24 @@ class LocalNotificationService {
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
     );
   }
+
+
+  static Future<void> showInstantNotification(String title, String body) async {
+    const androidDetails = AndroidNotificationDetails(
+      'foreground_channel',
+      'Foreground Notifications',
+      channelDescription: 'Shows notifications while app is open',
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+
+    const details = NotificationDetails(android: androidDetails);
+
+    await _notifications.show(
+      0, // ID
+      title,
+      body,
+      details,
+    );
+  }
 }

@@ -1,45 +1,8 @@
 {
-  "flutter": {
-    "platforms": {
-      "android": {
-        "default": {
-          "projectId": "crmproject-821b6",
-          "appId": "1:950913323152:android:dc623e1ed502fcf8ea4815",
-          "fileOutput": "android/app/google-services.json"
-        }
-      },
-      "dart": {
-        "lib/firebase_options.dart": {
-          "projectId": "crmproject-821b6",
-          "configurations": {
-            "android": "1:950913323152:android:dc623e1ed502fcf8ea4815",
-            "ios": "1:950913323152:ios:71c3c0c8d14d5b7dea4815",
-            "macos": "1:950913323152:ios:71c3c0c8d14d5b7dea4815",
-            "web": "1:950913323152:web:84a2ef691a4f37b2ea4815",
-            "windows": "1:950913323152:web:c6ccec9b69bb738cea4815"
-          }
-        }
-      }
-    }
-  },
   "functions": [
     {
       "codebase": "default",
-      "ignore": [
-        "node_modules",
-        ".git",
-        "firebase-debug.log",
-        "firebase-debug.*.log",
-        "*.local"
-      ],
-      "predeploy": [
-        "npm --prefix \"$RESOURCE_DIR\" run lint"
-      ],
-      "source": "functions"
-    },
-    {
-      "source": "notification_functions",
-      "codebase": "notification_functions",
+      "source": "functions",
       "ignore": [
         "node_modules",
         ".git",

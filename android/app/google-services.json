@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "950913323152",
-    "project_id": "crmproject-821b6",
-    "storage_bucket": "crmproject-821b6.firebasestorage.app"
+    "project_number": "991280352943",
+    "project_id": "snm-solutions",
+    "storage_bucket": "snm-solutions.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:950913323152:android:dc623e1ed502fcf8ea4815",
+        "mobilesdk_app_id": "1:991280352943:android:2dd83d65dc679337844e5a",
         "android_client_info": {
           "package_name": "com.example.crmproject"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAQVz8mNWXPRaugBunw7YBWr1_u05S5zYs"
+          "current_key": "AIzaSyCTzG6ylMsaU1Vo_L49CiUBoeMgqzytr_0"
         }
       ],
       "services": {

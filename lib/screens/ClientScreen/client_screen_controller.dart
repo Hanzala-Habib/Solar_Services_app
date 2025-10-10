@@ -10,6 +10,7 @@ class ClientProfileController extends GetxController {
   final addressController = TextEditingController();
   final mobileController = TextEditingController();
   var address = "".obs;
+  RxInt selected = 0.obs;
 
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
@@ -59,4 +60,7 @@ class ClientProfileController extends GetxController {
       Get.snackbar("Error", e.toString());
     }
   }
+
+
+
 }

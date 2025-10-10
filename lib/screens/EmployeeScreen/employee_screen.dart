@@ -1,30 +1,31 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crmproject/screens/AdminScreen/admin_screen_controller.dart';
 import 'package:crmproject/screens/EmployeeScreen/employee_service_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:get/get.dart';
 
 import '../LoginScreen/login_screen.dart';
-
-
 
 
 class EmployeeServicesScreen extends StatelessWidget {
 
   final email = FirebaseAuth.instance.currentUser?.email;
   final name = FirebaseAuth.instance.currentUser?.displayName;
-  final  employeeServiceController=Get.put(EmployeeServiceController());
-final adminController=Get.put(AdminController());
+  final employeeServiceController = Get.put(EmployeeServiceController());
+  final adminController = Get.put(AdminController());
+
   EmployeeServicesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar:AppBar(
+      appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          name??'Snm Employee',
+          name ?? 'Snm Employee',
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -38,10 +39,11 @@ final adminController=Get.put(AdminController());
                 await FirebaseAuth.instance.signOut();
                 Get.to(() => LoginScreen());
               } else if (value == 'reset') {
-                adminController.resetPassword(email??'');
+                adminController.resetPassword(email ?? '');
               }
             },
-            itemBuilder: (BuildContext context) => [
+            itemBuilder: (BuildContext context) =>
+            [
               PopupMenuItem(
                 value: 'logout',
                 child: Row(
@@ -82,54 +84,93 @@ final adminController=Get.put(AdminController());
           return Center(child: Text("No services available"));
         }
 
-        return ListView.builder(
-          itemCount: employeeServiceController.requests.length,
-          itemBuilder: (context, index) {
-            var request =employeeServiceController.requests[index];
+        return StreamBuilder<QuerySnapshot>(stream:FirebaseFirestore.instance.collection("requests").snapshots(), builder: (context,index){
+          return   ListView.builder(
+            itemCount: employeeServiceController.requests.length,
+            itemBuilder: (context, index) {
+              var request = employeeServiceController.requests[index];
 
-            return Card(
-              margin: EdgeInsets.all(10),
-              child: ListTile(
-                title: Text(request["title"]??'no title in requests',style: TextStyle(fontWeight: FontWeight.bold)),
-                subtitle:Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Price: ${request["price"] ?? 'N/A'} "),
-                    Text(" Status: ${request["status"]}"),
-                    if (request["scheduledDate"] != null)
-                      Text( "Scheduled Date: ${request["scheduledDate"].toDate().toLocal().toString().split(" ")[0]}",),
-                      Text("Time :${request["scheduledTime"] }")
-                  ],
+              return Card(
+                margin: EdgeInsets.all(10),
+                child: ListTile(
+                  title: Text(request["title"] ?? 'no title in requests',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Price: ${request["price"] ?? 'N/A'} "),
+                      Text(" Status: ${request["status"]}"),
+                      if (request["scheduledDate"] != null)
+                        Text("Scheduled Date: ${request["scheduledDate"].toDate()
+                            .toLocal().toString()
+                            .split(" ")[0]}",),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Row(
+
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Icon(Icons.call, size: 22, color: Colors.green,),
+                            SizedBox(width: 5),
+                            RichText(
+                              text: TextSpan(
+                                text: request['ClientNumber'],
+                                style: TextStyle(
+                                  color: Colors.blue[800],
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18,
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () async {
+                                    await FlutterPhoneDirectCaller.callNumber(
+                                        request['ClientNumber']);
+                                    Get.snackbar(
+                                      "Calling to Client",
+                                      "Please wait ",
+                                    );
+                                  },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (request["status"] == "pending")
+                        ElevatedButton(
+                          onPressed: () =>
+                              employeeServiceController.claimService(
+                                  request["id"]),
+                          child: Text("Claim"),
+                        ),
+                      if (request["status"] == "claimed" &&
+                          request["claimedBy"] ==
+                              employeeServiceController.userId)
+                        ElevatedButton(
+                          onPressed: () =>
+                              employeeServiceController.startService(
+                                  request["id"]),
+                          child: Text("Start"),
+                        ),
+                      if (request["status"] == "started" &&
+                          request["claimedBy"] ==
+                              employeeServiceController.userId)
+                        ElevatedButton(
+                          onPressed: () =>
+                              employeeServiceController.endService(request["id"]),
+                          child: Text("End"),
+                        ),
+                    ],
+                  ),
                 ),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (request["status"] == "pending")
-                      ElevatedButton(
-                        onPressed: () =>
-                            employeeServiceController.claimService(request["id"]),
-                        child: Text("Claim"),
-                      ),
-                    if (request["status"] == "claimed" &&
-                        request["claimedBy"] == employeeServiceController.userId)
-                      ElevatedButton(
-                        onPressed: () =>
-                            employeeServiceController.startService(request["id"]),
-                        child: Text("Start"),
-                      ),
-                    if (request["status"] == "started" &&
-                        request["claimedBy"] == employeeServiceController.userId)
-                      ElevatedButton(
-                        onPressed: () =>
-                            employeeServiceController.endService(request["id"]),
-                        child: Text("End"),
-                      ),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
+              );
+            },
+          );
+        });
+
       }),
     );
   }

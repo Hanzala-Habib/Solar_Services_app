@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
+import '../../data/services/local_notification_service.dart';
+
 
 
 class SubscriptionController extends GetxController {
@@ -133,14 +135,15 @@ class SubscriptionController extends GetxController {
     required String serviceId,
     required String userId,
     DateTime? scheduledDate,
+    required String mobileNumber,
   }) async {
-    // final requestDate = scheduledDate ?? DateTime.now();
-    //
-    // final docRef=
-    await _firestore.collection("requests").add({
+    final requestDate = scheduledDate ?? DateTime.now();
+
+    final docRef= await _firestore.collection("requests").add({
       "serviceId": serviceId,
       "userId": userId,
       "technicianId": null,
+      "ClientNumber":mobileNumber,
       "status": "pending",
       "scheduledDate": scheduledDate ?? DateTime.now(),
       "startTime": null,
@@ -151,13 +154,13 @@ class SubscriptionController extends GetxController {
       "location": selectedLocation,
     });
 
-    // await LocalNotificationService.scheduleNotification(
-    //   id: docRef.id.hashCode,
-    //   title: "Upcoming Service",
-    //   body: "Your service is scheduled tomorrow!",
-    //   scheduledDate: requestDate.subtract(const Duration(days: 1)),
-    // );
-    //
+    await LocalNotificationService.scheduleNotification(
+      id: docRef.id.hashCode,
+      title: "Upcoming Service",
+      body: "Your service is scheduled tomorrow!",
+      scheduledDate: requestDate.subtract(const Duration(days: 1)),
+    );
+
     // await LocalNotificationService.scheduleNotification(
     //   id: docRef.id.hashCode + 1,
     //   title: "Service Reminder",

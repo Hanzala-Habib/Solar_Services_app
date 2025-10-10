@@ -13,7 +13,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'data/services/local_notification_service.dart';
-import 'data/services/notification_services.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   log("Background/Terminated message: ${message.notification?.title}");
@@ -48,15 +47,19 @@ class _MyAppState extends State<MyApp> {
     await FirebaseMessaging.instance.requestPermission();
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-        NotificationService.handleMessage(message, context);
-      });
+      final notification = message.notification;
+      if (notification != null) {
+        LocalNotificationService.showInstantNotification(
+          notification.title ?? 'No Title',
+          notification.body ?? 'No Body',
+        );
+      }
+    });
 
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
         _showPage("Opened from background: ${message.notification?.title}");
       });
 
-    });
 
     RemoteMessage? initialMessage =
     await FirebaseMessaging.instance.getInitialMessage();
@@ -78,29 +81,56 @@ class _MyAppState extends State<MyApp> {
   }
 
   Widget _getInitialScreen() {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      return LoginScreen();
-    } else {
-      return FutureBuilder<DocumentSnapshot>(
-        future:
-        FirebaseFirestore.instance.collection("users").doc(user.uid).get(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Scaffold(
-                body: Center(child: CircularProgressIndicator()));
-          }
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
 
-          final data = snapshot.data!.data() as Map<String, dynamic>?;
-          final role = data?["role"];
+        // 🔹 If not logged in
+        if (!snapshot.hasData) return LoginScreen();
 
-          if (role == "Admin") return const AdminScreen();
-          if (role == "Manager") return ClientScreen(title: 'Manager Products',);
-          return ClientScreen();
-        },
-      );
-    }
+        final user = snapshot.data!;
+
+        // 🔹 Fetch user role
+        return FutureBuilder<DocumentSnapshot>(
+          future: _getUserDocument(user.uid),
+          builder: (context, userSnapshot) {
+            if (userSnapshot.connectionState == ConnectionState.waiting) {
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            }
+
+            final data = userSnapshot.data?.data() as Map<String, dynamic>?;
+            final role = data?["role"];
+
+            if (role == "Admin") return const AdminScreen();
+            if (role == "Employee") return EmployeeServicesScreen();
+            if (role == "Client") return ClientScreen();
+
+            return LoginScreen();
+          },
+        );
+      },
+    );
   }
+
+
+
+  Future<DocumentSnapshot> _getUserDocument(String uid) async {
+    final userDoc =
+    await FirebaseFirestore.instance.collection("users").doc(uid).get();
+    if (userDoc.exists) return userDoc;
+
+    final employeeDoc =
+    await FirebaseFirestore.instance.collection("employees").doc(uid).get();
+    return employeeDoc;
+  }
+
 
   @override
   Widget build(BuildContext context) {

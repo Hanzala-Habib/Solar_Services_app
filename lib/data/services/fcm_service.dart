@@ -2,23 +2,26 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class FCMService {
-  static Future<void> saveTokenToFirestore(String uid,) async {
+  static Future<void> saveTokenToFirestore(String uid) async {
     String? token = await FirebaseMessaging.instance.getToken();
-    print("🔹 FCM Token: $token");
-
     if (token == null) return;
-    final fireStore=FirebaseFirestore.instance;
-final userDoc=await fireStore.collection('users').doc(uid).get();
+
+    final fireStore = FirebaseFirestore.instance;
+
+
+    final userDoc = await fireStore.collection('users').doc(uid).get();
+
+
     if (userDoc.exists) {
       await fireStore.collection("users").doc(uid).set({
         "fcmToken": token,
+      }, SetOptions(merge: true));
 
-      },SetOptions(merge: true));
-    }else{
+    } else {
       await fireStore.collection('Employees').doc(uid).set({
-        "fcmToken":token
+        "fcmToken": token,
       },SetOptions(merge: true));
-
+      print("✅ user saved in Employee collection");
     }
   }
 }
